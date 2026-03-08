@@ -33,9 +33,9 @@ git push -u origin main
 ```
 
 **Important:** Make sure these files are in your repository:
-- `pom.xml`
-- `system.properties` (sets Java version to 21)
-- `render.yaml` (optional, but recommended)
+- `Dockerfile` (handles the build and deployment)
+- `pom.xml` (Maven configuration)
+- `system.properties` (Java version)
 - All source code in `src/` folder
 
 ---
@@ -153,23 +153,23 @@ https://YOUR-APP-NAME.onrender.com/swagger-ui.html
 
 ## 🔧 Troubleshooting
 
-### Build Fails with "Java compiler not available"
+### "Error: No Dockerfile found"
 
-**Problem:** Render is using JRE instead of JDK
-
-**Solution:** Add `system.properties` file (already included):
-```properties
-java.runtime.version=21
-```
-
-### Can't Find Java in Environment Dropdown
-
-**Problem:** Render doesn't show "Java" as an option
+**Problem:** Render can't find the Dockerfile
 
 **Solution:** 
-- Select **"Docker"** from the dropdown
-- Render will auto-detect Java from `pom.xml`
-- Or use the `render.yaml` file (already included)
+- Make sure `Dockerfile` (capital D) is in your repository root
+- Already included in your project - just push to GitHub
+- Leave "Dockerfile Path" blank in Render settings
+
+### Build Fails with Maven Errors
+
+**Problem:** Maven can't download dependencies or compile
+
+**Solution:**
+- Check Render build logs for specific errors
+- Usually network issues - retry deployment
+- Click "Manual Deploy" → "Deploy latest commit"
 
 ### First Request is Slow (Free Tier)
 
@@ -179,33 +179,6 @@ java.runtime.version=21
 - First request takes 30-60 seconds (cold start)
 - This is normal for free tier
 - Upgrade to $7/month Starter plan for always-on service
-
-### Build Fails: "Cannot download dependencies"
-
-**Problem:** Maven can't reach repositories
-
-**Solution:**
-- Check Render build logs for specific errors
-- Usually resolves on retry
-- Click "Manual Deploy" → "Clear build cache & deploy"
-
-### Port Binding Error
-
-**Problem:** App can't bind to port
-
-**Solution:**
-- Render automatically sets `PORT` environment variable
-- Spring Boot uses it automatically
-- Make sure you're not hardcoding port 8080 in production
-
-### JAR File Not Found
-
-**Problem:** `target/java-compiler-api-1.0.0.jar` not found
-
-**Solution:**
-- Check your `pom.xml` - `<artifactId>` and `<version>` must match
-- Current settings: `java-compiler-api` version `1.0.0`
-- Start command must match: `java -jar target/java-compiler-api-1.0.0.jar`
 
 ---
 
@@ -282,11 +255,12 @@ Before going live:
 
 ### Check These Common Problems:
 
-1. ✅ `system.properties` file exists with `java.runtime.version=21`
-2. ✅ `pom.xml` has correct artifact name
-3. ✅ Start command matches JAR filename exactly
-4. ✅ Build command is `mvn clean install -DskipTests`
-5. Selected **Docker** (not Node/Python) in environment
+1. ✅ `Dockerfile` exists in repository root (already included)
+2. ✅ Selected **"Docker"** in Language dropdown
+3. ✅ Left "Dockerfile Path" blank
+4. ✅ Root Directory is blank
+5. ✅ Branch is set to `main`
+6. ✅ All files pushed to GitHub
 
 ### Get Help:
 

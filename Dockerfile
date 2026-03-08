@@ -14,8 +14,8 @@ COPY src ./src
 # Build the application
 RUN mvn clean package -DskipTests
 
-# Use JDK 21 runtime image for running the application
-FROM eclipse-temurin:21-jre
+# Use JDK 21 for running the application (JDK needed for runtime compilation)
+FROM eclipse-temurin:21-jdk
 
 # Set working directory
 WORKDIR /app
