@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: java-compiler-api
+    env: java
+    buildCommand: mvn clean install -DskipTests
+    startCommand: java -jar target/java-compiler-api-1.0.0.jar
+    envVars:
+      - key: JAVA_TOOL_OPTIONS
+        value: -Xmx512m
+      - key: PORT
+        sync: false
+    healthCheckPath: /api/v1/health
